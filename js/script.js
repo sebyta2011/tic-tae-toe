@@ -2,6 +2,7 @@
 const gridValues = [[], [], []];
 
 const gameBoard = (function () {
+  let count = 1;
   for (i = 0; i <= 2; ++i) {
     for (j = 1; j <= 3; ++j) {
       const square = document.createElement("div");
@@ -11,8 +12,18 @@ const gameBoard = (function () {
       square.setAttribute("column", j);
       square.setAttribute("row", i + 1);
       square.setAttribute("value", ``);
+      square.setAttribute("place", count);
+      // let ricardo = gridValues[i];
+      // let juancho = ricardo[j];
+
+      // juancho = { column: j, row: i + 1, value: "" };
+      // gridValues[i] = { column: j, row: i + 1, value: "" };
+      // let linea = gridValues[columna];
+      // let casillita = linea[columna];
+
       gridValues[i].push(square);
       grid.appendChild(square);
+      count++;
     }
   }
 })();
@@ -36,6 +47,28 @@ function nextTurn() {
   }
 }
 
+function winRow() {
+  for (let columna = 0; columna < 1; ++columna) {
+    let linea = gridValues[columna];
+    let casillita = linea[columna];
+    if (
+      casillita.getAttribute("value") ==
+        linea[columna + 1].getAttribute("value") &&
+      casillita.getAttribute("value") ==
+        linea[columna + 2].getAttribute("value")
+    ) {
+      console.log("ricky");
+    }
+  }
+}
+
+// gridValues.getElementByAttribute()
+// function winColumn(tiles) {
+//   let lugar = tiles.getAttribute("place");
+//   let indice = gridValues[g];
+//   if()
+//   }
+
 //Tiles get clicked
 const tiles = document.querySelectorAll(`div[class="square"]`);
 tiles.forEach((tiles) => {
@@ -43,21 +76,11 @@ tiles.forEach((tiles) => {
     if (tiles.getAttribute("value") == "") {
       tiles.setAttribute("value", currentPlayer.mark);
       tiles.textContent = `${currentPlayer.mark}`;
-      win();
+      winRow();
       nextTurn();
     }
   });
 });
-
-function win() {
-  for (columna = 0; columna < 3; ++columna) {
-    let linea = gridValues[columna];
-    let casillita = linea[columna];
-    if (casillita == linea[columna + 1] && casillita == linea[columna + 2]) {
-      return console.log("ricky");
-    }
-  }
-}
 
 /* necesito:
 un objeto que contenga los jugadores

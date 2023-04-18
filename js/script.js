@@ -13,13 +13,6 @@ const gameBoard = (function () {
       square.setAttribute("row", i + 1);
       square.setAttribute("value", ``);
       square.setAttribute("place", count);
-      // let ricardo = gridValues[i];
-      // let juancho = ricardo[j];
-
-      // juancho = { column: j, row: i + 1, value: "" };
-      // gridValues[i] = { column: j, row: i + 1, value: "" };
-      // let linea = gridValues[columna];
-      // let casillita = linea[columna];
 
       gridValues[i].push(square);
       grid.appendChild(square);
@@ -27,6 +20,8 @@ const gameBoard = (function () {
     }
   }
 })();
+
+//JUGADORES
 
 const Player = (name, mark) => {
   let score = 0;
@@ -46,61 +41,82 @@ function nextTurn() {
     currentPlayer = players.player1;
   }
 }
-
-function winRow() {
-  for (let columna = 0; columna < 1; ++columna) {
-    let linea = gridValues[columna];
-    let casillita = linea[columna];
+//CONDICIONES DE VICTORIA
+const winColumn = function (tile) {
+  let valor = tile.getAttribute("value");
+  let columna = tile.getAttribute("column");
+  if (valor != "") {
     if (
-      casillita.getAttribute("value") ==
-        linea[columna + 1].getAttribute("value") &&
-      casillita.getAttribute("value") ==
-        linea[columna + 2].getAttribute("value")
+      valor == gridValues[0][columna - 1].getAttribute("value") &&
+      valor == gridValues[1][columna - 1].getAttribute("value") &&
+      valor == gridValues[2][columna - 1].getAttribute("value")
     ) {
-      console.log("ricky");
+      return (currentPlayer.score += 1), reset(), console.log("agano columna");
     }
   }
-}
+};
 
-function winColumn() {
-  let valor = tiles.getAttribute("value");
-  let columna = tiles.getAttribute("column");
-  console.log(valor);
-  console.log(columna);
-  if (
-    valor == gridValues[0][columna - 1].getAttribute("value") &&
-    valor == gridValues[1][columna - 1].getAttribute("value") &&
-    valor == gridValues[2][columna - 1].getAttribute("value")
-  ) {
-    console.log("agano");
+const winRow = (tile) => {
+  let valor = tile.getAttribute("value");
+  let fila = tile.getAttribute("row");
+  if (valor != "") {
+    if (
+      valor == gridValues[fila - 1][0].getAttribute("value") &&
+      valor == gridValues[fila - 1][1].getAttribute("value") &&
+      valor == gridValues[fila - 1][2].getAttribute("value")
+    ) {
+      return (currentPlayer.score += 1), reset(), console.log("agano linea");
+    }
   }
+};
+
+const winDiagonal = (tile) => {
+  let valor = tile.getAttribute("value");
+  if (valor != "") {
+    if (
+      (valor == gridValues[0][0].getAttribute("value") &&
+        valor == gridValues[1][1].getAttribute("value") &&
+        valor == gridValues[2][2].getAttribute("value")) ||
+      (valor == gridValues[0][2].getAttribute("value") &&
+        valor == gridValues[1][1].getAttribute("value") &&
+        valor == gridValues[2][0].getAttribute("value"))
+    ) {
+      return reset(), console.log("empat");
+    }
+  }
+};
+
+const tie = () => {
+  let cont = 0;
+  tiles.forEach((tile) => {
+    if (tile.getAttribute("value") !== "") {
+      cont += 1;
+    }
+  });
+  if (cont === 9) {
+    return reset(), console.log("empate");
+  }
+};
+
+function reset() {
+  tiles.forEach((element) => {
+    element.setAttribute("value", "");
+    element.textContent = ``;
+  });
 }
 
-//Tiles get clicked
+//TILES GET CLICKED
 const tiles = document.querySelectorAll(`div[class="square"]`);
-tiles.forEach((tiles) => {
-  tiles.addEventListener("click", (e) => {
-    if (tiles.getAttribute("value") == "") {
-      tiles.setAttribute("value", currentPlayer.mark);
-      tiles.textContent = `${currentPlayer.mark}`;
+tiles.forEach((tile) => {
+  tile.addEventListener("click", (e) => {
+    if (tile.getAttribute("value") == "") {
+      tile.setAttribute("value", currentPlayer.mark);
+      tile.textContent = `${currentPlayer.mark}`;
 
-      winRow();
-      function winColumn() {
-        let valor = tiles.getAttribute("value");
-        let columna = tiles.getAttribute("column");
-        console.log(valor);
-        console.log(columna);
-        if (
-          valor == gridValues[0][columna - 1].getAttribute("value") &&
-          valor == gridValues[1][columna - 1].getAttribute("value") &&
-          valor == gridValues[2][columna - 1].getAttribute("value")
-        ) {
-          console.log("agano");
-        }
-      }
-
-      winColumn();
-
+      winColumn(tile);
+      winRow(tile);
+      winDiagonal(tile);
+      tie();
       nextTurn();
     }
   });

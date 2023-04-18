@@ -62,12 +62,19 @@ function winRow() {
   }
 }
 
-// gridValues.getElementByAttribute()
-// function winColumn(tiles) {
-//   let lugar = tiles.getAttribute("place");
-//   let indice = gridValues[g];
-//   if()
-//   }
+function winColumn() {
+  let valor = tiles.getAttribute("value");
+  let columna = tiles.getAttribute("column");
+  console.log(valor);
+  console.log(columna);
+  if (
+    valor == gridValues[0][columna - 1].getAttribute("value") &&
+    valor == gridValues[1][columna - 1].getAttribute("value") &&
+    valor == gridValues[2][columna - 1].getAttribute("value")
+  ) {
+    console.log("agano");
+  }
+}
 
 //Tiles get clicked
 const tiles = document.querySelectorAll(`div[class="square"]`);
@@ -76,7 +83,24 @@ tiles.forEach((tiles) => {
     if (tiles.getAttribute("value") == "") {
       tiles.setAttribute("value", currentPlayer.mark);
       tiles.textContent = `${currentPlayer.mark}`;
+
       winRow();
+      function winColumn() {
+        let valor = tiles.getAttribute("value");
+        let columna = tiles.getAttribute("column");
+        console.log(valor);
+        console.log(columna);
+        if (
+          valor == gridValues[0][columna - 1].getAttribute("value") &&
+          valor == gridValues[1][columna - 1].getAttribute("value") &&
+          valor == gridValues[2][columna - 1].getAttribute("value")
+        ) {
+          console.log("agano");
+        }
+      }
+
+      winColumn();
+
       nextTurn();
     }
   });

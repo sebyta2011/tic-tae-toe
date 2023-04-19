@@ -17,3 +17,8 @@ div[class^="square"] {
   color: black;
   background-color: pink;
 }
+
+.scores-container {
+  width: 300px;
+  height: 100px;
+}

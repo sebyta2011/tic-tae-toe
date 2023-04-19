@@ -47,6 +47,7 @@ const interface = (() => {
   const player2Score = document.createElement("div");
   const speaker = document.createElement("div");
   const grid = document.getElementById("grid");
+  const main = document.getElementById("main-container");
 
   const scoreBoard = (() => {
     scoresContainer.classList.add("scores-container");
@@ -54,15 +55,15 @@ const interface = (() => {
     player2Score.classList.add("player2-score");
     speaker.classList.add("speaker");
 
-    grid.appendChild(scoresContainer);
-    grid.appendChild(speaker);
+    main.appendChild(scoresContainer);
+    main.appendChild(speaker);
     scoresContainer.appendChild(player1Score);
     scoresContainer.appendChild(player2Score);
   })();
 
   function updateScoreboard(currentPlayer) {
-    player1Score.textContent = players.player1.score;
-    player2Score.textContent = players.player2.score;
+    player1Score.textContent = "Player 1: " + players.player1.score;
+    player2Score.textContent = "Player 2: " + players.player2.score;
   }
 
   return { scoreBoard, updateScoreboard };

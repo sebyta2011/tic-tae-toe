@@ -40,6 +40,36 @@ const gameBoard = (function () {
   }
 })();
 
+//INTERFACE
+const interface = (() => {
+  const scoresContainer = document.createElement("div");
+  const player1Score = document.createElement("div");
+  const player2Score = document.createElement("div");
+  const speaker = document.createElement("div");
+  const grid = document.getElementById("grid");
+
+  const scoreBoard = (() => {
+    scoresContainer.classList.add("scores-container");
+    player1Score.classList.add("player1-score");
+    player2Score.classList.add("player2-score");
+    speaker.classList.add("speaker");
+
+    grid.appendChild(scoresContainer);
+    grid.appendChild(speaker);
+    scoresContainer.appendChild(player1Score);
+    scoresContainer.appendChild(player2Score);
+  })();
+
+  function updateScoreboard(currentPlayer) {
+    player1Score.textContent = players.player1.score;
+    player2Score.textContent = players.player2.score;
+  }
+
+  return { scoreBoard, updateScoreboard };
+})();
+
+interface.updateScoreboard();
+
 //OBJETO FUNCIONES
 const functions = (() => {
   const tie = () => {
@@ -71,7 +101,10 @@ const functions = (() => {
         valor == gridValues[2][columna - 1].getAttribute("value")
       ) {
         return (
-          (currentPlayer.score += 1), reset(), console.log("agano columna")
+          (currentPlayer.score += 1),
+          interface.updateScoreboard(),
+          reset(),
+          console.log("agano columna")
         );
       }
     }
@@ -86,7 +119,12 @@ const functions = (() => {
         valor == gridValues[fila - 1][1].getAttribute("value") &&
         valor == gridValues[fila - 1][2].getAttribute("value")
       ) {
-        return (currentPlayer.score += 1), reset(), console.log("agano linea");
+        return (
+          (currentPlayer.score += 1),
+          interface.updateScoreboard(),
+          reset(),
+          console.log("agano linea")
+        );
       }
     }
   };
@@ -103,7 +141,10 @@ const functions = (() => {
           valor == gridValues[2][0].getAttribute("value"))
       ) {
         return (
-          (currentPlayer.score += 1), reset(), console.log("agano diagonal")
+          (currentPlayer.score += 1),
+          interface.updateScoreboard(),
+          reset(),
+          console.log("agano diagonal")
         );
       }
     }

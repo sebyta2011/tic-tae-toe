@@ -1,19 +1,29 @@
+#main-container {
+  display: grid;
+  grid-template-rows: 200px 50px;
+  justify-content: center;
+}
+
 div[class^="square"] {
   height: 40px;
   width: 40px;
   background-color: red;
   margin: 1px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
 }
 
 #grid {
   display: grid;
   grid-template-columns: repeat(3, 50px);
   grid-template-rows: repeat(3, 50px);
+  justify-content: center;
+  align-content: center;
 }
 
 .speaker {
-  width: 300px;
-  height: 200px;
+  font-size: 32px;
   color: black;
   background-color: pink;
 }

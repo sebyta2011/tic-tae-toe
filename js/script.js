@@ -83,7 +83,7 @@ const functions = (() => {
       }
     });
     if (cont === 9) {
-      return reset(), console.log("empate");
+      return reset(), turnUpdateTie();
     }
   };
 
@@ -107,8 +107,7 @@ const functions = (() => {
           (currentPlayer.score += 1),
           interface.updateScoreboard(),
           turnUpdate(),
-          reset(),
-          console.log("agano columna")
+          reset()
         );
       }
     }
@@ -160,6 +159,10 @@ const functions = (() => {
     speaker.textContent = currentPlayer.name + ` wins the round!`;
   };
 
+  const turnUpdateTie = () => {
+    speaker.textContent = "TIE";
+  };
+
   const game = () => {
     if (players.player1.score == 5) {
       return (
@@ -178,7 +181,15 @@ const functions = (() => {
     }
   };
 
-  return { tie, winRow, winColumn, winDiagonal, game, turnUpdate };
+  return {
+    tie,
+    winRow,
+    winColumn,
+    winDiagonal,
+    game,
+    turnUpdate,
+    turnUpdateTie,
+  };
 })();
 
 //TILES GET CLICKED

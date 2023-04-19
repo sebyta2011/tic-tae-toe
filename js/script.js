@@ -72,6 +72,8 @@ interface.updateScoreboard();
 
 //OBJETO FUNCIONES
 const functions = (() => {
+  const speaker = document.getElementsByClassName("speaker")[0];
+
   const tie = () => {
     let cont = 0;
     tiles.forEach((tile) => {
@@ -103,6 +105,7 @@ const functions = (() => {
         return (
           (currentPlayer.score += 1),
           interface.updateScoreboard(),
+          turnUpdate(),
           reset(),
           console.log("agano columna")
         );
@@ -122,6 +125,7 @@ const functions = (() => {
         return (
           (currentPlayer.score += 1),
           interface.updateScoreboard(),
+          turnUpdate(),
           reset(),
           console.log("agano linea")
         );
@@ -143,13 +147,37 @@ const functions = (() => {
         return (
           (currentPlayer.score += 1),
           interface.updateScoreboard(),
+          turnUpdate(),
           reset(),
           console.log("agano diagonal")
         );
       }
     }
   };
-  return { tie, winRow, winColumn, winDiagonal };
+
+  const turnUpdate = () => {
+    speaker.textContent = currentPlayer.name + ` wins the round!`;
+  };
+
+  const game = () => {
+    if (players.player1.score == 5) {
+      return (
+        (speaker.textContent = "Player 1 wins the game!"),
+        (players.player1.score = 0),
+        (players.player2.score = 0),
+        interface.updateScoreboard()
+      );
+    } else if (players.player2.score == 5) {
+      return (
+        (speaker.textContent = "Player 2 wins the game!"),
+        (players.player1.score = 0),
+        (players.player2.score = 0),
+        interface.updateScoreboard()
+      );
+    }
+  };
+
+  return { tie, winRow, winColumn, winDiagonal, game, turnUpdate };
 })();
 
 //TILES GET CLICKED
@@ -164,6 +192,7 @@ tiles.forEach((tile) => {
       functions.winRow(tile);
       functions.winDiagonal(tile);
       functions.tie();
+      functions.game();
       nextTurn();
     }
   });
